@@ -27,9 +27,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const password = String(credentials?.password ?? "");
         if (!email || !password) return null;
         const user = await prisma.user.findUnique({ where: { normalizedEmail: email } });
-        if (!user || !user.passwordHash || user.status !== "ACTIVE") return null;
+        const allowUnverified = process.env.AUTH_REQUIRE_EMAIL_VERIFICATION === "false";
+        const canLogin = user?.status === "ACTIVE" || (allowUnverified && user?.status === "PENDING_VERIFICATION");
+        if (!user || !user.passwordHash || !canLogin) return null;
         const valid = await argon2.verify(user.passwordHash, password);
         if (!valid) return null;
+        if (allowUnverified && user.status === "PENDING_VERIFICATION") await prisma.user.update({ where: { id: user.id }, data: { status: "ACTIVE" } });
         const access = await getAccess(user.id);
         await prisma.user.update({ where: { id: user.id }, data: { lastLoginAt: new Date() } });
         return { id: user.id, name: user.name, email: user.email, image: user.image, status: access.status, permissions: access.permissions };

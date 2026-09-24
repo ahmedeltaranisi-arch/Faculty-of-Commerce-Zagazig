@@ -1,10 +1,11 @@
-import "dotenv/config";
+﻿import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
+    seed: "tsx prisma/seed.ts",
   },
   datasource: {
     // Support both the app's DATABASE_URL and Vercel Postgres integration variables.
@@ -16,3 +17,4 @@ export default defineConfig({
       "postgresql://placeholder:placeholder@localhost:5432/commerce_zagazig",
   },
 });
+

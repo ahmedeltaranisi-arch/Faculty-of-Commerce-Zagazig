@@ -5,7 +5,7 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { type FormEvent, useMemo, useState } from "react";
-import { ArrowRight, Eye, EyeOff, LoaderCircle, LockKeyhole, Mail, UserRound } from "lucide-react";
+import { AlertCircle, ArrowRight, CheckCircle2, Eye, EyeOff, LoaderCircle, LockKeyhole, Mail, UserRound } from "lucide-react";
 import { tracks } from "@/data/demo";
 
 const gradeOptions = [
@@ -100,18 +100,18 @@ export function LoginPanel() {
           <div className="auth-tabs"><button className={mode === "login" ? "active" : ""} onClick={() => { setMode("login"); setError(""); setNotice(""); }}>تسجيل الدخول</button><button className={mode === "register" ? "active" : ""} onClick={() => { setMode("register"); setError(""); setNotice(""); }}>حساب جديد</button></div>
           <div className="auth-heading"><span className="auth-heading__eyebrow">منصة طلاب تجارة الزقازيق</span><h2>{heading}</h2><p>{mode === "login" ? "أدخل بياناتك للوصول إلى لوحة الطالب." : "بياناتك الأكاديمية تحدد المحتوى الظاهر لك."}</p></div>
           <form onSubmit={submit} className="auth-form">
-            {mode === "register" && <label className="field"><span>الاسم بالكامل</span><div className="field__input"><UserRound size={17} /><input required minLength={2} name="name" placeholder="مثال: أحمد محمد" /></div></label>}
-            <label className="field"><span>البريد الإلكتروني</span><div className="field__input"><Mail size={17} /><input required type="email" name="email" placeholder="name@example.com" /></div></label>
+            {mode === "register" && <label className="field"><span>الاسم بالكامل</span><div className="field__input"><UserRound size={17} /><input required minLength={2} name="name" autoComplete="name" placeholder="مثال: أحمد محمد" /></div></label>}
+            <label className="field"><span>البريد الإلكتروني</span><div className="field__input"><Mail size={17} /><input required type="email" name="email" autoComplete="email" placeholder="name@example.com" /></div></label>
             {mode === "register" && <div className="field-row"><label className="field"><span>الفرقة</span><select name="gradeCode" defaultValue="second">{gradeOptions.map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select></label><label className="field"><span>الشعبة</span><select name="trackName" value={selectedTrack} onChange={(event) => setSelectedTrack(event.target.value)}>{tracks.map((track) => <option key={track}>{track}</option>)}</select></label></div>}
-            <label className="field"><span>كلمة المرور</span><div className="field__input"><LockKeyhole size={17} /><input required minLength={8} type={showPassword ? "text" : "password"} name="password" placeholder="8 أحرف على الأقل" /><button type="button" className="field__toggle" aria-label={showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"} onClick={() => setShowPassword((value) => !value)}>{showPassword ? <EyeOff size={16} /> : <Eye size={16} />}</button></div></label>
-            {mode === "register" && <label className="field"><span>تأكيد كلمة المرور</span><div className="field__input"><LockKeyhole size={17} /><input required minLength={8} type="password" name="confirmPassword" placeholder="أعد كتابة كلمة المرور" /></div></label>}
+            <label className="field"><span>كلمة المرور</span><div className="field__input"><LockKeyhole size={17} /><input required minLength={8} type={showPassword ? "text" : "password"} name="password" autoComplete={mode === "register" ? "new-password" : "current-password"} placeholder="8 أحرف على الأقل" /><button type="button" className="field__toggle" aria-label={showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"} onClick={() => setShowPassword((value) => !value)}>{showPassword ? <EyeOff size={16} /> : <Eye size={16} />}</button></div></label>
+            {mode === "register" && <label className="field"><span>تأكيد كلمة المرور</span><div className="field__input"><LockKeyhole size={17} /><input required minLength={8} type="password" name="confirmPassword" autoComplete="new-password" placeholder="أعد كتابة كلمة المرور" /></div></label>}
             {mode === "login" && <div className="form-meta"><label><input type="checkbox" defaultChecked /> تذكرني</label><Link className="link-button" href="/forgot-password">نسيت كلمة المرور؟</Link></div>}
             <button className="button button--primary button--full" type="submit" disabled={busy}>{busy ? <LoaderCircle size={17} className="spin" /> : mode === "login" ? "تسجيل الدخول" : "إنشاء الحساب"}{!busy && <ArrowRight size={17} />}</button>
           </form>
           <div className="auth-divider"><span>أو تابع باستخدام</span></div>
           <div className="social-buttons"><button type="button" className="social-button" onClick={() => socialLogin("google")}><span className="google-g">G</span> Google</button><button type="button" className="social-button" onClick={() => socialLogin("facebook")}><span className="google-g" style={{ color: "#1877f2" }}>f</span> Facebook</button></div>
-          {notice && <div className="form-notice" role="status">{notice}</div>}
-          {error && <div className="form-notice form-notice--error" role="alert">{error}</div>}
+          {notice && <div className="form-notice form-notice--success" role="status" aria-live="polite"><CheckCircle2 size={18} aria-hidden="true" /><span>{notice}</span></div>}
+          {error && <div className="form-notice form-notice--error" role="alert" aria-live="assertive"><AlertCircle size={18} aria-hidden="true" /><span>{error}</span></div>}
           <p className="auth-footnote">بالتسجيل، أنت توافق على شروط الاستخدام وسياسة الخصوصية.</p>
         </div>
       </div>

@@ -8,6 +8,11 @@ export const metadata: Metadata = {
   },
   description: "المنصة التعليمية لطلاب كلية التجارة بجامعة الزقازيق — كتب، مذكرات، فيديوهات واختبارات.",
   applicationName: "منصة كلية التجارة - جامعة الزقازيق",
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  },
   keywords: ["كلية التجارة", "جامعة الزقازيق", "منصة تعليمية", "مذكرات تجارة", "اختبارات تجارة"],
   openGraph: {
     title: "كلية التجارة - جامعة الزقازيق",

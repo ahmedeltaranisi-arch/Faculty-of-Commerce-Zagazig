@@ -12,7 +12,7 @@ export async function GET(request: Request, context: RouteContext) {
   const access = await requireApiPermission(request, "users.read");
   if (access.response) return access.response;
   const { id } = await context.params;
-  const user = await prisma.user.findUnique({ where: { id }, select: { id: true, name: true, email: true, status: true, emailVerifiedAt: true, lastLoginAt: true, createdAt: true, roles: { select: { role: { select: { id: true, name: true, description: true } } } }, enrollments: { orderBy: { createdAt: "desc" }, include: { grade: true, track: true } } } });
+  const user = await prisma.user.findUnique({ where: { id }, select: { id: true, name: true, email: true, status: true, emailVerified: true, lastLoginAt: true, createdAt: true, roles: { select: { role: { select: { id: true, name: true, description: true } } } }, enrollments: { orderBy: { createdAt: "desc" }, include: { grade: true, track: true } } } });
   if (!user) return fail("NOT_FOUND", "المستخدم غير موجود.", request, 404);
   return ok(user, request);
 }

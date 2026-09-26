@@ -14,7 +14,7 @@ model User {
   passwordHash    String?       @map("password_hash")
   image           String?
   status          UserStatus    @default(PENDING_VERIFICATION)
-  emailVerifiedAt DateTime?     @map("email_verified_at")
+  emailVerified   DateTime?     @map("email_verified_at")
   lastLoginAt     DateTime?     @map("last_login_at")
   createdAt       DateTime      @default(now()) @map("created_at")
   updatedAt       DateTime      @updatedAt @map("updated_at")

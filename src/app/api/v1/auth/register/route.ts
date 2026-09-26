@@ -5,6 +5,7 @@ import { prisma } from "@/server/db/prisma";
 import { fail, ok } from "@/lib/api-response";
 import { registerSchema } from "@/lib/validations/auth";
 import { createOpaqueToken, sendVerificationEmail } from "@/server/email/service";
+import { requiresEmailVerification } from "@/server/auth/settings";
 
 const gradeByCode = { first: "FIRST", second: "SECOND", third: "THIRD", fourth: "FOURTH" } as const;
 const trackByCode = { regular: "REGULAR", affiliate: "AFFILIATE", credit: "CREDIT", english: "ENGLISH" } as const;
@@ -23,7 +24,7 @@ export async function POST(request: Request) {
       prisma.role.findUnique({ where: { name: "STUDENT" } }),
     ]);
     if (!grade || !track || !studentRole) return fail("CONFIGURATION_ERROR", "إعدادات التسجيل غير مكتملة.", request, 503);
-    const requireEmailVerification = process.env.AUTH_REQUIRE_EMAIL_VERIFICATION !== "false";
+    const requireEmailVerification = requiresEmailVerification();
     const passwordHash = await argon2.hash(parsed.data.password, { type: argon2.argon2id });
     const verification = requireEmailVerification ? createOpaqueToken() : null;
     const user = await prisma.$transaction(async (tx) => {

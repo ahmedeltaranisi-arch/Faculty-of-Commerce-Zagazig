@@ -14,8 +14,8 @@
 - Design System responsive وحالات UI أساسية.
 - Prisma 7 Schema للـUsers وRoles وPermissions والفرق والمواد والكتب والمذكرات والفيديوهات والاختبارات والنتائج والـAudit Logs.
 - Seed للفرق والشعب والأدوار والصلاحيات والمواد الأولية.
-- Auth.js route foundation مع Credentials وGoogle وFacebook.
-- Register API مع Zod وArgon2id.
+- Auth.js مع Credentials وGoogle وFacebook، باستخدام JWT Sessions المتوافقة مع تسجيل الدخول بالبريد وكلمة المرور.
+- Register API مع Zod وArgon2id، وتفعيل البريد اختياري عبر `AUTH_REQUIRE_EMAIL_VERIFICATION=true` بعد إعداد مزود البريد.
 - Health API.
 - Grades وSubjects وLinks APIs مع تحديد النطاق الأكاديمي.
 - Books API للطالب وCRUD أساسي للأدمن.
@@ -61,6 +61,8 @@ npm run db:validate
 npm run db:migrate -- --name init
 npm run db:seed
 ```
+
+> افتراضيًا يمكن للمستخدم تسجيل الدخول مباشرة بعد إنشاء الحساب. لتفعيل التحقق من البريد، اضبط `AUTH_REQUIRE_EMAIL_VERIFICATION=true` وأكمل إعداد متغيرات البريد في ملف البيئة.
 
 ## Routes الحالية
 

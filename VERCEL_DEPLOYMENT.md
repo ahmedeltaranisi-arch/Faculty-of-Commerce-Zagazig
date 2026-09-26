@@ -11,6 +11,7 @@ NEXT_PUBLIC_APP_URL=https://YOUR-PROJECT.vercel.app
 NEXT_PUBLIC_DEMO_MODE=true
 AUTH_SECRET=ضع_قيمة_عشوائية_طويلة
 AUTH_TRUST_HOST=true
+AUTH_REQUIRE_EMAIL_VERIFICATION=false
 ```
 
 في هذا الوضع:
@@ -32,7 +33,10 @@ NEXT_PUBLIC_APP_URL=https://YOUR-DOMAIN.vercel.app
 NEXT_PUBLIC_DEMO_MODE=false
 AUTH_SECRET=قيمة_عشوائية_قوية_جديدة
 AUTH_TRUST_HOST=true
+AUTH_REQUIRE_EMAIL_VERIFICATION=false
 ```
+
+> اجعل القيمة `true` بدلًا من `false` فقط بعد إعداد `EMAIL_FROM` و`EMAIL_API_KEY` لإجبار المستخدم على تفعيل البريد قبل الدخول.
 
 بعد ذلك شغّل من جهازك أو من CI:
 

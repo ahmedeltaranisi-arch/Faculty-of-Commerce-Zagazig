@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { signOut } from "next-auth/react";
 import { ArrowLeft, Bell, BookOpen, CheckCircle2, ChevronDown, ClipboardCheck, Clock3, Download, ExternalLink, FileText, Home, LayoutDashboard, LogOut, Menu, PlayCircle, Search, Settings, ShieldCheck, Trophy, X } from "lucide-react";
 import { Brand } from "@/components/brand";
 import { demoExams, demoResources, grades, importantLinks, type Resource } from "@/data/demo";
@@ -37,7 +38,7 @@ export function StudentDashboard() {
           <button><Settings size={18} /><span>الإعدادات</span></button>
         </nav>
         <div className="sidebar-help"><ShieldCheck size={22} /><div><strong>محتوى مخصص لك</strong><span>يظهر لك محتوى فرقتك وشعبتك فقط.</span></div></div>
-        <Link className="sidebar-logout" href="/"><LogOut size={17} /> تسجيل الخروج</Link>
+        <button type="button" className="sidebar-logout" onClick={() => signOut({ callbackUrl: "/login" })}><LogOut size={17} /> تسجيل الخروج</button>
       </aside>
       {mobileOpen && <button className="dashboard-overlay" onClick={() => setMobileOpen(false)} aria-label="إغلاق القائمة" />}
       <main className="dashboard-main">

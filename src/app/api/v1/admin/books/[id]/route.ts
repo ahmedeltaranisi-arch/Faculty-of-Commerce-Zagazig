@@ -5,8 +5,9 @@ import { fail, ok } from "@/lib/api-response";
 import { requireApiPermission } from "@/server/auth/api-guard";
 
 const patchSchema = z.object({ title: z.string().trim().min(2).max(180).optional(), description: z.string().trim().max(3000).nullable().optional(), gradeSubjectId: z.string().min(1).optional(), fileAssetId: z.string().min(1).optional(), coverAssetId: z.string().min(1).nullable().optional(), status: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]).optional() }).strict();
+type RouteContext = { params: Promise<{ id: string }> };
 
-export async function PATCH(request: Request, context: RouteContext<"/api/v1/admin/books/[id]">) {
+export async function PATCH(request: Request, context: RouteContext) {
   const access = await requireApiPermission(request, "content.books.update");
   if (access.response) return access.response;
   const { id } = await context.params;
@@ -18,7 +19,7 @@ export async function PATCH(request: Request, context: RouteContext<"/api/v1/adm
   return ok(item, request);
 }
 
-export async function DELETE(request: Request, context: RouteContext<"/api/v1/admin/books/[id]">) {
+export async function DELETE(request: Request, context: RouteContext) {
   const access = await requireApiPermission(request, "content.books.delete");
   if (access.response) return access.response;
   const { id } = await context.params;

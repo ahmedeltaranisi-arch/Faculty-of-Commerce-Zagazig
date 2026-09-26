@@ -64,7 +64,9 @@ export function LoginPanel() {
         setNotice(payload.data?.message ?? "تم إنشاء الحساب. تحقق من بريدك الإلكتروني.");
       } else {
         const result = await signIn("credentials", { email, password, redirect: false, callbackUrl: "/dashboard" });
-        if (!result || result.error) throw new Error("البريد الإلكتروني أو كلمة المرور غير صحيحة.");
+        if (!result) throw new Error("تعذر تسجيل الدخول حاليًا.");
+        if (result.error === "CredentialsSignin") throw new Error("البريد الإلكتروني أو كلمة المرور غير صحيحة.");
+        if (result.error) throw new Error("تعذر تشغيل تسجيل الدخول حاليًا. راجع إعدادات الخادم وقاعدة البيانات.");
         router.push("/dashboard");
       }
     } catch (caught) {
@@ -80,7 +82,11 @@ export function LoginPanel() {
       setNotice("أزرار OAuth جاهزة، وسيتم تشغيلها بعد إضافة مفاتيح Google وFacebook.");
       return;
     }
-    await signIn(provider, { callbackUrl: "/dashboard" });
+    try {
+      await signIn(provider, { callbackUrl: "/dashboard" });
+    } catch {
+      setError("خيار الدخول الاجتماعي غير مفعّل حاليًا.");
+    }
   }
 
   return (

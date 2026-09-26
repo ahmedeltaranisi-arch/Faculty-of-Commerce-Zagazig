@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 
 export async function requireUser() {
   const session = await auth();
-  if (!session?.user) redirect("/login");
+  if (!session?.user || session.user.status !== "ACTIVE") redirect("/login");
   return session.user;
 }
 
